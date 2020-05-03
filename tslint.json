@@ -6,6 +6,15 @@
     "deprecation": {
       "severity": "warning"
     },
+    "variable-name":
+    [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case",
+      "allow-trailing-underscore"
+    ],
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
@@ -88,4 +97,5 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ]
+
 }
