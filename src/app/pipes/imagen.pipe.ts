@@ -22,15 +22,15 @@ export class ImagenPipe implements PipeTransform {
 
     switch (tipo) {
       case 'usuarios':
-        url += '/usuarios' + img;
+        url += '/usuarios/' + img;
         break;
 
       case 'medicos':
-        url += '/medicos' + img;
+        url += '/medicos/' + img;
         break;
 
       case 'hospitales':
-        url += '/hospitales' + img;
+        url += '/hospitales/' + img;
         break;
 
       default:

@@ -5,3 +5,11 @@
 .pointer {
   cursor: pointer;
 }
+
+.w150 {
+  width: 150px;
+}
+
+.foto-perfil-edit {
+  text-align: center;
+}
