@@ -12,10 +12,10 @@ export class HeaderComponent implements OnInit {
   usuario: Usuario;
 
   constructor(public _usuarioService: UsuarioService) {
-    this.usuario = this._usuarioService.usuario;
   }
 
   ngOnInit(): void {
+    this.usuario = this._usuarioService.usuario;
   }
 
 }

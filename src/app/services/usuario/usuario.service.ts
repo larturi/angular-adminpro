@@ -76,7 +76,8 @@ export class UsuarioService {
 
     return this.http.post(url, usuario)
         .map( (resp: any) => {
-           this.guardarLocalStorage(resp.id, resp.token, usuario);
+           // console.log(resp.usuarioBD);
+           this.guardarLocalStorage(resp.id, resp.token, resp.usuarioBD);
            return true;
         });
 
