@@ -1,6 +1,33 @@
 <div class="row animated fadeIn">
 
-  <div class="col-lg-7">
+  <div class="col-lg-5 col-md-12">
+    <div class="card">
+        <div class="card-body foto-perfil-edit">
+            <h4 class="card-title">Fotografia del usuario</h4>
+
+            <img *ngIf="!imagenTemp" [src]="usuario.img | imagen" class="w150 mb-3">
+            <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150 mb-3">
+
+            <br>
+
+            <input class="mt-1" (change)="seleccionImagen( $event.target.files[0] )" type="file" >
+
+            <br>
+
+            <div class="row mt-3 ml-0">
+
+              <button (click)="cambiarImagen()" [disabled]="!imagenSubir" type="button" class="btn btn-success waves-effect waves-light m-r-10">
+                <i class="fa fa-save"></i>
+                Actualizar Foto
+              </button>
+
+            </div>
+
+        </div>
+     </div>
+  </div>
+
+  <div class="col-lg-7 col-md-12">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Perfil del usuario</h4>
@@ -31,27 +58,6 @@
     </div>
   </div>
 
-  <div class="col-lg-5">
-    <div class="card">
-        <div class="card-body foto-perfil-edit">
-            <h4 class="card-title">Fotografia del usuario</h4>
-            <h6 class="card-subtitle">Nombre</h6>
 
-            <img *ngIf="!imagenTemp" [src]="usuario.img | imagen" class="w150 mb-3">
-            <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150 mb-3">
-
-            <input (change)="seleccionImagen( $event.target.files[0] )" type="file" >
-
-            <br><br>
-
-            <button (click)="cambiarImagen()" [disabled]="!imagenSubir" type="button" class="btn btn-success waves-effect waves-light m-r-10">
-              <i class="fa fa-save"></i>
-              Actualizar Foto
-            </button>
-
-
-        </div>
-     </div>
-  </div>
 
 </div>
