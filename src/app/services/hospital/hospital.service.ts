@@ -46,9 +46,6 @@ export class HospitalService {
 
   crearHospital(nombreHospital: string) {
     const url = URL_SERVICIOS + '/hospital' + '?token=' + this._usuarioService.token;
-
-    //console.log(nombreHospital);
-
     return this.http.post(url, {nombre: nombreHospital})
          .map((resp: any) => resp.hospital);
 
