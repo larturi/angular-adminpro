@@ -9,6 +9,7 @@ import { ModalUploadService } from '../../components/modal-upload/modal-upload.s
   templateUrl: './usuarios.component.html',
   styles: []
 })
+
 export class UsuariosComponent implements OnInit {
 
   usuarios: Usuario[] = [];

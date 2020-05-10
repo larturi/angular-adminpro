@@ -5,6 +5,10 @@ import { URL_SERVICIOS } from '../../config/config';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError} from 'rxjs';
+
 import Swal from 'sweetalert2';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
@@ -15,6 +19,7 @@ export class UsuarioService {
 
   usuario: Usuario;
   token = '';
+  menu: any[];
 
   constructor(public http: HttpClient,
               public router: Router,
@@ -31,26 +36,32 @@ export class UsuarioService {
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.menu = JSON.parse(localStorage.getItem('menu'));
     } else {
       this.token = '';
       this.usuario = null;
+      this.menu = null;
     }
   }
 
-  guardarLocalStorage(id: string, token: string, usuario: Usuario) {
+  guardarLocalStorage(id: string, token: string, usuario: Usuario, menu: any) {
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
     localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('menu', JSON.stringify(menu));
 
     this.usuario = usuario;
     this.token = token;
+    this.menu = menu;
   }
 
   logout() {
     this.usuario = null;
     this.token = '';
+    this.menu = null;
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
+    localStorage.removeItem('menu');
     this._ngZone.run(() => this.router.navigate(['/login']));
   }
 
@@ -59,7 +70,7 @@ export class UsuarioService {
 
     return this.http.post(url, {token})
           .map ( (resp: any) => {
-              this.guardarLocalStorage(resp.id, resp.token, resp.usuarioBD);
+              this.guardarLocalStorage(resp.id, resp.token, resp.usuarioBD, resp.menu);
               return true;
           });
   }
@@ -76,12 +87,21 @@ export class UsuarioService {
 
     const url = URL_SERVICIOS + '/login';
 
-    return this.http.post(url, usuario)
-        .map( (resp: any) => {
-           // console.log(resp.usuarioBD);
-           this.guardarLocalStorage(resp.id, resp.token, resp.usuarioBD);
+    return this.http.post(url, usuario).pipe(
+        map( (resp: any) => {
+           this.guardarLocalStorage(resp.id, resp.token, resp.usuarioBD, resp.menu);
            return true;
-        });
+        }),
+        catchError(err => {
+          Swal.fire(
+            'Credenciales incorrectas',
+            'Por favor intentar nuevamente',
+            'error'
+          );
+          console.log(err.error.mensaje);
+          return throwError(err.message);
+        })
+    );
 
   }
 
@@ -89,27 +109,38 @@ export class UsuarioService {
 
      const url = URL_SERVICIOS + '/usuario';
 
-     return this.http.post(url, usuario)
-         .map((resp: any) => {
+     return this.http.post(url, usuario).pipe(
+        map((resp: any) => {
           Swal.fire(
             'Usuario creado',
             usuario.email,
             'success'
           );
           return resp.usuario;
-         });
-
+        }),
+        catchError(err => {
+          Swal.fire(
+            'Ya existe el usuario ' + usuario.email,
+            'Por favor intentar nuevamente con un email distinto',
+            'error'
+          );
+          console.log(err.error.mensaje);
+          return throwError(err.message);
+        })
+    );
   }
 
   actualizarUsuario(usuario: Usuario) {
 
     const url = URL_SERVICIOS + '/usuario/' + usuario._id + '?token=' + this.token;
 
+    // console.log(url);
+
     return this.http.put(url, usuario)
          .map((resp: any) => {
 
              if (usuario._id === this.usuario._id) {
-                this.guardarLocalStorage(resp.usuario.id, this.token, resp.usuario);
+                this.guardarLocalStorage(resp.usuario.id, this.token, resp.usuario, this.menu);
              }
 
              Swal.fire(
@@ -128,7 +159,7 @@ export class UsuarioService {
     this._subirArchivosService.subirArchivo(archivo, 'usuarios', id)
        .then( (resp: any) => {
           this.usuario.img = resp.usuario.img;
-          this.guardarLocalStorage(id, this.token, this.usuario);
+          this.guardarLocalStorage(id, this.token, this.usuario, this.menu);
           Swal.fire(
             'Imagen actualizada',
             resp.usuario.email,
