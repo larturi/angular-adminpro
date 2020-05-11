@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MedicoService, HospitalService } from '../../services/service.index';
-import { Hospital } from 'src/app/models/hospital.model';
-import { Medico } from 'src/app/models/medico.model';
+import { Hospital } from '../../models/hospital.model';
+import { Medico } from '../../models/medico.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
 

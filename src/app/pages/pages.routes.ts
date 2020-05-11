@@ -14,35 +14,29 @@ import { MedicosComponent } from './medicos/medicos.component';
 import { MedicoComponent } from './medicos/medico.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { LoginGuardGuard, AdminGuard } from '../services/service.index';
+import { VerificaTokenGuard } from '../services/guards/verifica-token.guard';
 
 const pagesRoutes: Routes = [
-  {
-     path: '',
-     component: PagesComponent,
-     canActivate: [LoginGuardGuard],
-     children: [
-      {path: 'dashboard', component: DashboardComponent, data: {titulo: 'Dashboard'} },
-      {path: 'progress', component: ProgressComponent, data: {titulo: 'Progress'}},
-      {path: 'graficas1', component: Graficas1Component, data: {titulo: 'Graficas'}},
-      {path: 'promesas', component: PromesasComponent, data: {titulo: 'Promesas'}},
-      {path: 'rxjs', component: RxjsComponent, data: {titulo: 'Rxjs'}},
-      {path: 'account-settings', component: AccountSettingsComponent, data: {titulo: 'Ajustes'}},
-      {path: 'profile', component: ProfileComponent, data: {titulo: 'Perfil de usuario'}},
-      {path: 'busqueda/:termino', component: BusquedaComponent, data: {titulo: 'Buscador'}},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Dashboard'} },
+  {path: 'progress', component: ProgressComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Progress'}},
+  {path: 'graficas1', component: Graficas1Component, canActivate: [VerificaTokenGuard], data: {titulo: 'Graficas'}},
+  {path: 'promesas', component: PromesasComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Promesas'}},
+  {path: 'rxjs', component: RxjsComponent, data: {titulo: 'Rxjs'}},
+  {path: 'account-settings', component: AccountSettingsComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Ajustes'}},
+  {path: 'profile', component: ProfileComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Perfil de usuario'}},
+  {path: 'busqueda/:termino', component: BusquedaComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Buscador'}},
 
-      // Administracion
-      {
-        path: 'usuarios',
-        canActivate: [AdminGuard],
-        component: UsuariosComponent,
-        data: {titulo: 'Administracion de Usuarios'}
-      },
-      {path: 'hospitales', component: HospitalesComponent, data: {titulo: 'Administracion de Hospitales'}},
-      {path: 'medicos', component: MedicosComponent, data: {titulo: 'Administracion de Medicos'}},
-      {path: 'medico/:id', component: MedicoComponent, data: {titulo: 'Actualizar Medico'}},
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-     ]
-  }
+  // Administracion
+  {
+    path: 'usuarios',
+    canActivate: [AdminGuard, VerificaTokenGuard],
+    component: UsuariosComponent,
+    data: {titulo: 'Administracion de Usuarios'}
+  },
+  {path: 'hospitales', component: HospitalesComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Administracion de Hospitales'}},
+  {path: 'medicos', component: MedicosComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Administracion de Medicos'}},
+  {path: 'medico/:id', component: MedicoComponent, canActivate: [VerificaTokenGuard], data: {titulo: 'Actualizar Medico'}},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 ];
 
 export const PAGES_ROUTES = RouterModule.forChild(pagesRoutes);

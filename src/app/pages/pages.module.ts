@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { PAGES_ROUTES } from './pages.routes';
 
-import { PagesComponent } from './pages.component';
 import { SharedModule } from '../shared/shared.module';
 
 import { FormsModule } from '@angular/forms';
@@ -22,7 +21,6 @@ import { PipesModule } from '../pipes/pipes.module';
 import { ProfileComponent } from './profile/profile.component';
 import { CommonModule } from '@angular/common';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 import { HospitalesComponent } from './hospitales/hospitales.component';
 import { MedicosComponent } from './medicos/medicos.component';
 import { MedicoComponent } from './medicos/medico.component';
@@ -33,7 +31,6 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     DashboardComponent,
     ProgressComponent,
     Graficas1Component,
-    PagesComponent,
     IncrementadorComponent,
     GraficoDonaComponent,
     AccountSettingsComponent,
@@ -41,7 +38,6 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     RxjsComponent,
     ProfileComponent,
     UsuariosComponent,
-    ModalUploadComponent,
     HospitalesComponent,
     MedicosComponent,
     MedicoComponent,
@@ -50,8 +46,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
   exports: [
     DashboardComponent,
     ProgressComponent,
-    Graficas1Component,
-    PagesComponent
+    Graficas1Component
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Usuario } from 'src/app/models/usuario.model';
+import { Usuario } from '../../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from '../../config/config';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { Observable, throwError} from 'rxjs';
+import { throwError} from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
@@ -26,6 +26,27 @@ export class UsuarioService {
               public _ngZone: NgZone,
               public _subirArchivosService: SubirArchivoService) {
     this.cargarStorage();
+  }
+
+  renuevaToken() {
+    const url = URL_SERVICIOS + '/login/renuevatoken?token=' + this.token;
+    return this.http.get(url).pipe(
+         map( (resp: any) => {
+             this.token = resp.token;
+             localStorage.setItem('token', resp.token);
+             return true;
+         }),
+         catchError(err => {
+          Swal.fire(
+            'No se pudo renovar token',
+            'Debe autenticarse nuevamente',
+            'error'
+          );
+          this.router.navigate(['/login']);
+          console.log(err.error.mensaje);
+          return throwError(err.message);
+        })
+    );
   }
 
   estaLogueado() {
